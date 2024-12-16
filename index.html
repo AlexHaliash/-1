@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Image Metadata Extractor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Image Metadata Extractor</h1>
+            <p>Upload your images and explore their details in a unique way!</p>
+        </div>
+
+        <div class="upload-area">
+            <input type="file" id="fileInput" multiple>
+            <button class="upload-btn">Upload Images</button>
+        </div>
+
+        <div class="table-container">
+            <table id="resultTable">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Dimensions (px)</th>
+                        <th>Resolution (dpi)</th>
+                        <th>Color Depth</th>
+                        <th>Compression</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
