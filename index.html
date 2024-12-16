@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Растеризация</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    canvas {
+      border: 1px solid black;
+      margin-top: 10px;
+    }
+    #controls {
+      margin-top: 20px;
+    }
+    label {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Приложение для растеризации</h1>
+  <div id="controls">
+    <label for="algorithm">Выберите алгоритм:</label>
+    <select id="algorithm">
+      <option value="dda">ЦДА</option>
+      <option value="bresenham">Брезенхем (отрезок)</option>
+      <option value="circle">Брезенхем (окружность)</option>
+    </select>
+
+    <div id="line-controls">
+      <label for="x1">x1:</label>
+      <input type="number" id="x1" value="50">
+      <label for="y1">y1:</label>
+      <input type="number" id="y1" value="50">
+      <label for="x2">x2:</label>
+      <input type="number" id="x2" value="200">
+      <label for="y2">y2:</label>
+      <input type="number" id="y2" value="200">
+    </div>
+
+    <div id="circle-controls" style="display: none;">
+      <label for="cx">Центр x:</label>
+      <input type="number" id="cx" value="150">
+      <label for="cy">Центр y:</label>
+      <input type="number" id="cy" value="150">
+      <label for="radius">Радиус:</label>
+      <input type="number" id="radius" value="50">
+    </div>
+
+    <button id="drawButton">Нарисовать</button>
+  </div>
+
+  <canvas id="canvas" width="400" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const algorithmSelect = document.getElementById('algorithm');
+    const drawButton = document.getElementById('drawButton');
+    const lineControls = document.getElementById('line-controls');
+    const circleControls = document.getElementById('circle-controls');
+
+    // Функция для очистки холста
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+    }
+
+    // Алгоритм ЦДА для отрезков
+    function dda(x1, y1, x2, y2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const steps = Math.max(Math.abs(dx), Math.abs(dy));
+      const xIncrement = dx / steps;
+      const yIncrement = dy / steps;
+      let x = x1;
+      let y = y1;
+
+      for (let i = 0; i <= steps; i++) {
+        ctx.fillRect(Math.round(x), Math.round(y), 1, 1);
+        x += xIncrement;
+        y += yIncrement;
+      }
+    }
+
+    // Алгоритм Брезенхема для отрезков
+    function bresenham(x1, y1, x2, y2) {
+      let dx = Math.abs(x2 - x1);
+      let dy = Math.abs(y2 - y1);
+      let sx = x1 < x2 ? 1 : -1;
+      let sy = y1 < y2 ? 1 : -1;
+      let err = dx - dy;
+
+      while (true) {
+        ctx.fillRect(x1, y1, 1, 1);
+        if (x1 === x2 && y1 === y2) break;
+        const e2 = err * 2;
+        if (e2 > -dy) {
+          err -= dy;
+          x1 += sx;
+        }
+        if (e2 < dx) {
+          err += dx;
+          y1 += sy;
+        }
+      }
+    }
+
+    // Алгоритм Брезенхема для окружностей
+    function bresenhamCircle(cx, cy, r) {
+      let x = 0;
+      let y = r;
+      let p = 3 - 2 * r;
+
+      function drawCirclePoints(x, y) {
+        ctx.fillRect(cx + x, cy + y, 1, 1);
+        ctx.fillRect(cx - x, cy + y, 1, 1);
+        ctx.fillRect(cx + x, cy - y, 1, 1);
+        ctx.fillRect(cx - x, cy - y, 1, 1);
+        ctx.fillRect(cx + y, cy + x, 1, 1);
+        ctx.fillRect(cx - y, cy + x, 1, 1);
+        ctx.fillRect(cx + y, cy - x, 1, 1);
+        ctx.fillRect(cx - y, cy - x, 1, 1);
+      }
+
+      while (x <= y) {
+        drawCirclePoints(x, y);
+        if (p < 0) {
+          p += 4 * x + 6;
+        } else {
+          p += 4 * (x - y) + 10;
+          y--;
+        }
+        x++;
+      }
+    }
+
+    // Обработчик события для рисования
+    drawButton.addEventListener('click', () => {
+      clearCanvas();
+
+      const algorithm = algorithmSelect.value;
+      const x1 = parseInt(document.getElementById('x1').value);
+      const y1 = parseInt(document.getElementById('y1').value);
+      const x2 = parseInt(document.getElementById('x2').value);
+      const y2 = parseInt(document.getElementById('y2').value);
+      const cx = parseInt(document.getElementById('cx').value);
+      const cy = parseInt(document.getElementById('cy').value);
+      const radius = parseInt(document.getElementById('radius').value);
+
+      if (algorithm === 'dda') {
+        dda(x1, y1, x2, y2);
+      } else if (algorithm === 'bresenham') {
+        bresenham(x1, y1, x2, y2);
+      } else if (algorithm === 'circle') {
+        bresenhamCircle(cx, cy, radius);
+      }
+    });
+
+    // Изменение доступных параметров в зависимости от выбранного алгоритма
+    algorithmSelect.addEventListener('change', () => {
+      const algorithm = algorithmSelect.value;
+
+      if (algorithm === 'circle') {
+        lineControls.style.display = 'none';
+        circleControls.style.display = 'block';
+      } else {
+        lineControls.style.display = 'block';
+        circleControls.style.display = 'none';
+      }
+    });
+
+    // Инициализация
+    algorithmSelect.dispatchEvent(new Event('change'));
+  </script>
+</body>
+</html>
