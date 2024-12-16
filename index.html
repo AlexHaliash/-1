@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор цвета</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Калькулятор цвета</h1>
+        <div class="color-display" id="colorDisplay"></div>
+        <div id="colorInfo">
+            <p>RGB: <span id="rgbValue"></span></p>
+            <p>CMYK: <span id="cmykValue"></span></p>
+            <p>LAB: <span id="labValue"></span></p>
+        </div>
+
+        <div>
+            <h2>RGB</h2>
+            <input type="number" id="r" min="0" max="255" value="255">
+            <input type="number" id="g" min="0" max="255" value="0">
+            <input type="number" id="b" min="0" max="255" value="0">
+            <br>
+            <input type="range" id="rSlider" min="0" max="255" value="255">
+            <input type="range" id="gSlider" min="0" max="255" value="0">
+            <input type="range" id="bSlider" min="0" max="255" value="0">
+        </div>
+
+        <div>
+            <h2>Hex</h2>
+            <input type="text" id="hex" placeholder="#FF0000">
+        </div>
+
+        <div>
+            <h2>Выбор цвета</h2>
+            <input type="color" id="colorPicker">
+        </div>
+
+        <div>
+            <h2>CMYK</h2>
+            <input type="number" id="c" min="0" max="100" value="0" readonly>
+            <input type="number" id="m" min="0" max="100" value="100" readonly>
+            <input type="number" id="y" min="0" max="100" value="100" readonly>
+            <input type="number" id="k" min="0" max="100" value="0" readonly>
+        </div>
+
+        <div>
+            <h2>LAB</h2>
+            <input type="number" id="l" min="0" max="100" value="0" readonly>
+            <input type="number" id="a" min="-128" max="127" value="0" readonly>
+            <input type="number" id="b_lab" min="-128" max="127" value="0" readonly>
+        </div>
+    </div>
+</body>
+</html>
