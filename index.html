@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Visualization of Letter Г</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="controls">
+        <button onclick="scaleObject(1.1)">Увеличить</button>
+        <button onclick="scaleObject(0.9)">Уменьшить</button>
+        <button onclick="translateObject(1, 0, 0)">Переместить вправо</button>
+        <button onclick="translateObject(-1, 0, 0)">Переместить влево</button>
+        <button onclick="translateObject(0, 1, 0)">Переместить вверх</button>
+        <button onclick="translateObject(0, -1, 0)">Переместить вниз</button>
+        <button onclick="rotateObject(Math.PI / 8, new THREE.Vector3(1, 1, 0))">Повернуть</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
